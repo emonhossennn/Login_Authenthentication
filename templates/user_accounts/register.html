@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-center">Register</h3>
+            </div>
+            <div class="card-body">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <form method="post" onsubmit="return validateForm()">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password1" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password1" name="password1" required>
+                        <small class="form-text text-muted">
+                            Password must contain:
+                            <ul>
+                                <li>At least 8 characters</li>
+                                <li>At least one uppercase letter</li>
+                                <li>At least one lowercase letter</li>
+                                <li>At least one number</li>
+                                <li>At least one special character (!@#$%^&*(),.?":{}|<>)</li>
+                            </ul>
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password2" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="password2" name="password2" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div>
+                </form>
+                <div class="text-center mt-3">
+                    <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function validateForm() {
+    const password = document.getElementById('password1').value;
+    const confirmPassword = document.getElementById('password2').value;
+    
+    // Check password length
+    if (password.length < 8) {
+        alert('Password must be at least 8 characters long');
+        return false;
+    }
+    
+    // Check for uppercase
+    if (!/[A-Z]/.test(password)) {
+        alert('Password must contain at least one uppercase letter');
+        return false;
+    }
+    
+    // Check for lowercase
+    if (!/[a-z]/.test(password)) {
+        alert('Password must contain at least one lowercase letter');
+        return false;
+    }
+    
+    // Check for number
+    if (!/[0-9]/.test(password)) {
+        alert('Password must contain at least one number');
+        return false;
+    }
+    
+    // Check for special character
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        alert('Password must contain at least one special character (!@#$%^&*(),.?":{}|<>)');
+        return false;
+    }
+    
+    // Check if passwords match
+    if (password !== confirmPassword) {
+        alert('Passwords do not match');
+        return false;
+    }
+    
+    return true;
+}
+</script>
+{% endblock %} 
