@@ -17,7 +17,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import redirect
-from user_accounts.views import home, CustomLoginView
 
 def redirect_to_login(request):
     return redirect('login')
